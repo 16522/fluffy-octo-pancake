@@ -35,10 +35,10 @@ class EllipticalCylinderUnfold(Scene):
         right_line = Line(start=bottom_ellipse.get_right(), end=top_ellipse.get_right(), color=WHITE)
 
         # Add labels for points P and Q, radius r, and height h
-        point_p = Dot(point=bottom_ellipse.get_left(), color=YELLOW)  # Move point P to the leftmost point of the bottom ellipse
-        label_p = MathTex("P", font_size=30).next_to(point_p, LEFT)  # Adjust label position accordingly
+        point_p = Dot(point=bottom_ellipse.get_left(), color=YELLOW)  # Point P at the bottom-left corner
+        label_p = MathTex("P", font_size=30).next_to(point_p, LEFT)
 
-        point_q = Dot(point=top_ellipse.get_right(), color=YELLOW)
+        point_q = Dot(point=top_ellipse.get_right(), color=YELLOW)  # Point Q at the top-right corner
         label_q = MathTex("Q", font_size=30).next_to(point_q, RIGHT)
 
         radius_label = MathTex("r", font_size=30).next_to(bottom_ellipse.get_right(), DOWN)
@@ -57,9 +57,9 @@ class EllipticalCylinderUnfold(Scene):
         rectangle_p = Dot(point=unfolded_rectangle.get_corner(LEFT + DOWN), color=YELLOW)  # Point P at the bottom-left corner
         rectangle_label_p = MathTex("P", font_size=30).next_to(rectangle_p, LEFT)
 
-        # Point Q is at the middle of the top edge
-        rectangle_q = Dot(point=unfolded_rectangle.get_edge_center(UP), color=YELLOW)  # Point Q at the center of the top edge
-        rectangle_label_q = MathTex("Q", font_size=30).next_to(rectangle_q, UP)
+        # Point Q is at the rightmost point of the top edge
+        rectangle_q = Dot(point=unfolded_rectangle.get_edge_center(RIGHT), color=YELLOW)  # Point Q at the top-right corner
+        rectangle_label_q = MathTex("Q", font_size=30).next_to(rectangle_q, RIGHT)
 
         # Draw the line connecting P and Q (diagonal line)
         shortest_path = Line(start=rectangle_p.get_center(), end=rectangle_q.get_center(), color=YELLOW, stroke_width=4)
@@ -73,8 +73,8 @@ class EllipticalCylinderUnfold(Scene):
         # Move h label downward slightly
         height_label = MathTex("h", font_size=30).next_to(rectangle_q, RIGHT).shift(DOWN * 0.5)  # Shift it downward
 
-        # Create arc for the path from P to Q
-        arc_path = Arc(radius=1, start_angle=PI, angle=-PI, color=YELLOW).shift(LEFT * 3)
+        # Create arc for the path from P to Q along the surface of the cylinder
+        arc_path = ArcBetweenPoints(start=point_p.get_center(), end=point_q.get_center(), radius=2, color=YELLOW)
 
         # Group all the elements
         unfolded_group = VGroup(
@@ -100,6 +100,9 @@ class EllipticalCylinderUnfold(Scene):
         # Add arrow animation
         self.play(FadeIn(arrow), Write(arrow_label))
 
+        # **Step before showing unfolded rectangle, add arc animation**
+        self.play(Create(arc_path))  # Arc animation comes **before** unfolded rectangle
+
         # Show unfolded rectangle
         self.play(Create(unfolded_rectangle))
         self.wait(1)
@@ -110,9 +113,6 @@ class EllipticalCylinderUnfold(Scene):
 
         # Add vertical line animation
         self.play(Create(vertical_line))
-
-        # Add arc animation (path from P to Q)
-        self.play(Create(arc_path))
 
         # Step 7: Add explanatory text for shortest path
         explanation_text = Text(
