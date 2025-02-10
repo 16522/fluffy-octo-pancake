@@ -98,7 +98,7 @@ class EllipticalCylinderUnfold(Scene):
         self.play(Create(left_line), Create(right_line))
         self.play(Create(point_p), Write(label_p))
         self.play(Create(point_q), Write(label_q))
-        self.play(Write(radius_label), Create(radius_line), Write(height_label))
+        self.play(Write(radius_label), Create(radius_line))
 
         # Add arrow animation
         self.play(FadeIn(arrow), Write(arrow_label))
@@ -112,10 +112,13 @@ class EllipticalCylinderUnfold(Scene):
         self.play(Create(shortest_path))
         self.play(Create(rectangle_p), Write(rectangle_label_p))
         self.play(Create(rectangle_q), Write(rectangle_label_q))
-        self.play(Write(rectangle_radius), Write(height_label))
+        self.play(Write(rectangle_radius))
 
         # Add vertical line animation
         self.play(Create(vertical_line))
+
+        # **Step before adding height label, add vertical line animation**
+        self.play(Write(height_label))  # height_label appears after vertical line is drawn
 
         # Step 7: Add explanatory text for shortest path
         explanation_text = Text(
