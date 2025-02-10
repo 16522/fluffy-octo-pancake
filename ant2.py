@@ -41,7 +41,8 @@ class EllipticalCylinderUnfold(Scene):
         point_q = Dot(point=top_ellipse.get_right(), color=YELLOW)  # Point Q at the top-right corner
         label_q = MathTex("Q", font_size=30).next_to(point_q, RIGHT)
 
-        radius_label = MathTex("r", font_size=30).next_to(bottom_ellipse.get_right(), DOWN)
+        radius_label = MathTex("r", font_size=30).next_to(bottom_ellipse.get_right(), DOWN).shift(
+            LEFT * 0.3)  # Move left
         radius_line = DashedLine(start=bottom_ellipse.get_center(), end=bottom_ellipse.get_right(), color=WHITE)
 
         height_label = MathTex("h", font_size=30).next_to(left_line, LEFT)
@@ -58,8 +59,9 @@ class EllipticalCylinderUnfold(Scene):
         rectangle_label_p = MathTex("P", font_size=30).next_to(rectangle_p, LEFT)
 
         # Point Q is at the rightmost point of the top edge
-        rectangle_q = Dot(point=unfolded_rectangle.get_edge_center(RIGHT), color=YELLOW)  # Point Q at the top-right corner
-        rectangle_label_q = MathTex("Q", font_size=30).next_to(rectangle_q, RIGHT)
+        rectangle_q = Dot(point=unfolded_rectangle.get_edge_center(UP),
+                          color=YELLOW)  # Point Q at the midpoint of the top edge
+        rectangle_label_q = MathTex("Q", font_size=30).next_to(rectangle_q, UP)
 
         # Draw the line connecting P and Q (diagonal line)
         shortest_path = Line(start=rectangle_p.get_center(), end=rectangle_q.get_center(), color=YELLOW, stroke_width=4)
@@ -86,8 +88,9 @@ class EllipticalCylinderUnfold(Scene):
         )
 
         # Add arrow and label for "展开后"
-        arrow = Arrow(LEFT, RIGHT, buff=0.1, color=WHITE).move_to(ORIGIN + LEFT * 1.5)  # Move arrow further left
-        arrow_label = Text("展开后", font_size=24, color=WHITE).next_to(arrow, UP).shift(RIGHT * 1)  # Move right
+        arrow = Arrow(LEFT, RIGHT, buff=0.1, color=WHITE).move_to(ORIGIN + LEFT * 1)  # Move arrow further left
+        arrow_label = Text("展开后", font_size=24, color=WHITE).next_to(arrow, UP).shift(LEFT * 0)  # Move left
+
 
         # Step 6: Create animations
         self.play(Create(bottom_ellipse, run_time=1))  # Faster bottom ellipse drawing
