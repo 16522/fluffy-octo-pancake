@@ -1,6 +1,5 @@
 from manim import *
 
-
 class AdjustedPointsWithQ(Scene):
     def construct(self):
         # 创建基准线（长度10单位，灰色）
@@ -80,19 +79,18 @@ class AdjustedPointsWithQ(Scene):
             PA, PB,
             BQ_dashed,
             inequality,
-            title  # 添加标题作为最后一个元素确保显示在最上层
+            title
         ]
         if q_point is not None:
             elements.append(Q_label.add_background_rectangle(opacity=0.7))
         self.add(*elements)
 
-        # 运行动画
+        # 修改后的动画部分（总时长6秒）
         self.play(
             P.animate(rate_func=linear).move_to(base_line.get_end()),
-            run_time=4,
+            run_time=3,  # 去程时间缩短到3秒
         )
         self.play(
             P.animate(rate_func=linear).move_to(base_line.get_start()),
-            run_time=4,
+            run_time=3,  # 返程时间缩短到3秒
         )
-        self.wait(2)
